@@ -7,6 +7,8 @@ import requests
 
 # http_client.HTTPConnection.debuglevel = 1
 
+__version__ = '0.1.0'
+
 BASE_URL = "https://beta.lds.org"
 MLS_URL = "{}/mls/mbr".format(BASE_URL)
 HT_URL = "{}/htvt/services/v1".format(BASE_URL)
