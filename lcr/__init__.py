@@ -3,9 +3,7 @@
 import logging
 import requests
 
-# import logging
 # import http.client as http_client
-
 # http_client.HTTPConnection.debuglevel = 1
 
 __version__ = '0.1.0'
@@ -49,29 +47,30 @@ class API():
                                 'encoded': 'false',
                                 'gx_charset': 'UTF-8'})
 
-    def _get(self, url, params=None, headers=None):
-        return self.session.get(url=url, params=params, headers=headers)
-
     def birthday_list(self, month, months=1):
         _LOGGER.info("Getting birthday list")
 
-        result = self._get(
+        result = self.session.get(
             url='{}/services/report/birthday-list'.format(MLS_URL),
             params={'lang': 'eng',
                     'month': month,
-                    'months': months})
+                    'months': months},
+            cookies={'clerk-resources-beta-terms': 'true'})
 
         _LOGGER.debug("Birthday list result (as text): %s", result.text)
         return result.json()
 
     def members_moved_in(self):
-        result = self._get(url='{}/report/members-moved-in'.format(MLS_URL),
-                           params={'lang': 'eng'})
+        result = self.session.get(
+            url='{}/report/members-moved-in'.format(MLS_URL),
+            params={'lang': 'eng'},
+            cookies={'clerk-resources-beta-terms': 'true'})
 
-        result = self._get(
+        result = self.session.get(
             url='{}/services/report/members-moved-in/unit/4022/1'.format(
                 MLS_URL),
             params={'lang': 'eng'},
+            cookies={'clerk-resources-beta-terms': 'true'},
             headers={'Accept': 'application/json, text/plain, */*',
                      'Accept-Encoding': 'gzip, deflate, sdch',
                      'Accept-Language': 'en-US,en;q=0.8',
@@ -84,13 +83,16 @@ class API():
         return result.json()
 
     def members_moved_out(self):
-        result = self._get(url='{}/report/members-moved-out'.format(MLS_URL),
-                           params={'lang': 'eng'})
+        self.session.get(
+            url='{}/report/members-moved-out'.format(MLS_URL),
+            params={'lang': 'eng'},
+            cookies={'clerk-resources-beta-terms': 'true'})
 
-        result = self._get(
+        result = self.session.get(
             url='{}/services/report/members-moved-out/unit/4022/1'.format(
                 MLS_URL),
             params={'lang': 'eng'},
+            cookies={'clerk-resources-beta-terms': 'true'},
             headers={'Accept': 'application/json, text/plain, */*',
                      'Accept-Encoding': 'gzip, deflate, sdch',
                      'Accept-Language': 'en-US,en;q=0.8',
@@ -104,19 +106,27 @@ class API():
 
     # TODO: Change this to three separate methods
     def custom_home_and_visiting_teaching(self):
-        members = self._get(url='{}/4022/members'.format(HT_URL))
+        members = self.session.get(
+            url='{}/4022/members'.format(HT_URL),
+            cookies={'clerk-resources-beta-terms': 'true'})
         # open("members.json", 'w').write(members.text)
         members = members.json()
 
-        hp_data = self._get('{}/4022/districts/472432'.format(HT_URL))
+        hp_data = self.session.get(
+            url='{}/4022/districts/472432'.format(HT_URL),
+            cookies={'clerk-resources-beta-terms': 'true'})
         # open("hp_data.json", 'w').write(hp_data.text)
         hp_data = hp_data.json()
 
-        eq_data = self._get('{}/4022/districts/472433'.format(HT_URL))
+        eq_data = self.session.get(
+            url='{}/4022/districts/472433'.format(HT_URL),
+            cookies={'clerk-resources-beta-terms': 'true'})
         # open("eq_data.json", 'w').write(eq_data.text)
         eq_data = eq_data.json()
 
-        rs_data = self._get('{}/4022/districts/472435'.format(HT_URL))
+        rs_data = self.session.get(
+            url='{}/4022/districts/472435'.format(HT_URL),
+            cookies={'clerk-resources-beta-terms': 'true'})
         # open("rs_data.json", 'w').write(rs_data.text)
         rs_data = rs_data.json()
 
