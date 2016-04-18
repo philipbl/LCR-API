@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logging
 import requests
 
 # import logging
@@ -8,6 +9,8 @@ import requests
 # http_client.HTTPConnection.debuglevel = 1
 
 __version__ = '0.1.0'
+
+_LOGGER = logging.getLogger(__name__)
 
 BASE_URL = "https://beta.lds.org"
 MLS_URL = "{}/mls/mbr".format(BASE_URL)
@@ -27,10 +30,14 @@ class API():
         self._login(username, password)
 
     def _login(self, user, password):
+        _LOGGER.info("Logging in")
+
         # Set up the session cookie
+        _LOGGER.info("Setting up session cookie")
         self.session.get('https://www.lds.org/mls/mbr/')
 
         # Log in
+        _LOGGER.info("Log in")
         self.session.post('https://ident.lds.org/sso/UI/Login',
                           data={'action': 'login',
                                 'IDToken1': user,
@@ -46,12 +53,15 @@ class API():
         return self.session.get(url=url, params=params, headers=headers)
 
     def birthday_list(self, month, months=1):
+        _LOGGER.info("Getting birthday list")
+
         result = self._get(
             url='{}/services/report/birthday-list'.format(MLS_URL),
             params={'lang': 'eng',
                     'month': month,
                     'months': months})
 
+        _LOGGER.debug("Birthday list result (as text): %s", result.text)
         return result.json()
 
     def members_moved_in(self):
@@ -92,6 +102,7 @@ class API():
 
         return result.json()
 
+    # TODO: Change this to three separate methods
     def custom_home_and_visiting_teaching(self):
         members = self._get(url='{}/4022/members'.format(HT_URL))
         # open("members.json", 'w').write(members.text)
