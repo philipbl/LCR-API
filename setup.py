@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import os
 from setuptools import setup, find_packages
-from lcr import __version__
 
+VERSION = '0.1.0'
 PACKAGE_NAME = 'lcr'
 HERE = os.path.abspath(os.path.dirname(__file__))
 DOWNLOAD_URL = ('https://github.com/philipbl/LCR-API/archive/'
-                '{}.zip'.format(__version__))
+                '{}.zip'.format(VERSION))
 
 PACKAGES = find_packages(exclude=['tests', 'tests.*'])
 
@@ -16,7 +16,7 @@ REQUIRES = [
 
 setup(
     name=PACKAGE_NAME,
-    version=__version__,
+    version=VERSION,
     license='MIT License',
     download_url=DOWNLOAD_URL,
     author='Philip Lundrigan',

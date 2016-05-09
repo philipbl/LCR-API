@@ -6,7 +6,6 @@ import requests
 # import http.client as http_client
 # http_client.HTTPConnection.debuglevel = 1
 
-__version__ = '0.1.0'
 
 _LOGGER = logging.getLogger(__name__)
 
