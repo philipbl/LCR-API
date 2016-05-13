@@ -3,10 +3,11 @@
 import logging
 import requests
 
-import http.client as http_client
-http_client.HTTPConnection.debuglevel = 1
-
 _LOGGER = logging.getLogger(__name__)
+
+if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
+    import http.client as http_client
+    http_client.HTTPConnection.debuglevel = 1
 
 HOST = "lds.org"
 BASE_URL = "https://{}".format(HOST)
