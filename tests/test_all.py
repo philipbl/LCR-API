@@ -5,8 +5,8 @@ import lcr
 class Test:
     @classmethod
     def setup_class(cls):
-        user = os.environ.get('LDS_USER')
-        password = os.environ.get('LDS_PASSWORD')
+        user = os.environ['LDS_USER']
+        password = os.environ['LDS_PASSWORD']
         cls.cd = lcr.API(user, password)
 
     def test_birthday(self):
