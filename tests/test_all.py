@@ -76,3 +76,22 @@ class Test:
         for key in ["emailAddress", "address", "spouse", "phone", "children",
                     "headOfHouse", "formattedCoupleName", "homeTaughtByAuxId"]:
             assert key in families[0]
+
+    def test_member_list(self):
+        member_list = Test.cd.member_list()
+
+        assert isinstance(member_list, list)
+
+        member = member_list[0]
+        assert isinstance(member, dict)
+
+        for key in ["outOfUnitMember", "setApart", "priesthoodCode", "id", "name",
+                    "gender", "formattedMrn", "isSpouse", "sustainedDate", "mrn",
+                    "unitName", "priesthoodType", "spokenName", "householdPhone",
+                    "visible", "priesthood", "nonMember", "isAdult", "birthDateSort",
+                    "isHead", "formattedBirthDateFull", "birthDate", "genderLabelShort",
+                    "genderCode", "actualAge", "phone", "householdEmail",
+                    "actualAgeInMonths", "householdId", "coupleName", "nameOrder",
+                    "formattedBirthDate", "givenName", "email", "unitNumber",
+                    "fullTimeMissionary", "address", "age"]:
+            assert key in member
