@@ -133,3 +133,18 @@ class API():
                 "hp": hp_data,
                 "eq": eq_data,
                 "rs": rs_data}
+
+    def member_list(self):
+        result = self.session.get(
+            url='{}/services/report/member-list?lang=eng&unitNumber=4022'.format(MLS_URL),
+            cookies={'clerk-resources-beta-terms': 'true'})
+
+        return result.json()
+
+    def individual_picture(self, member_id):
+        result = self.session.get(
+            url='{}/individual-photo?lang=eng&id={}'.format(MLS_URL,
+                                                            member_id),
+            cookies={'clerk-resources-beta-terms': 'true'})
+
+        return result.content
