@@ -3,13 +3,13 @@
 import logging
 import requests
 
-# import http.client as http_client
-# http_client.HTTPConnection.debuglevel = 1
-
+import http.client as http_client
+http_client.HTTPConnection.debuglevel = 1
 
 _LOGGER = logging.getLogger(__name__)
 
-BASE_URL = "https://beta.lds.org"
+HOST = "lds.org"
+BASE_URL = "https://{}".format(HOST)
 MLS_URL = "{}/mls/mbr".format(BASE_URL)
 HT_URL = "{}/htvt/services/v1".format(BASE_URL)
 USER_AGENT = ''.join(
@@ -74,7 +74,7 @@ class API():
                      'Accept-Encoding': 'gzip, deflate, sdch',
                      'Accept-Language': 'en-US,en;q=0.8',
                      'Connection': 'keep-alive',
-                     'Host': 'beta.lds.org',
+                     'Host': HOST,
                      'Referer': '{}/report/members-moved-in?lang=eng'.format(
                          MLS_URL),
                      'User-Agent': USER_AGENT})
@@ -96,7 +96,7 @@ class API():
                      'Accept-Encoding': 'gzip, deflate, sdch',
                      'Accept-Language': 'en-US,en;q=0.8',
                      'Connection': 'keep-alive',
-                     'Host': 'beta.lds.org',
+                     'Host': HOST,
                      'Referer': '{}/report/members-moved-in?lang=eng'.format(
                          MLS_URL),
                      'User-Agent': USER_AGENT})
