@@ -92,6 +92,7 @@ class API():
             raise Exception("Unable to get birthday list")
 
     def members_moved_in(self):
+        _LOGGER.info("Getting members moved in")
         def get(host, url):
             self.session.get(
                 url='{}/report/members-moved-in'.format(url),
@@ -114,11 +115,13 @@ class API():
 
         try:
             result = self._try_beta(get)
+            _LOGGER.debug("Move in list result (as text): %s", result.text)
             return result.json()
         except Exception:
             raise Exception("Unable to get move in report")
 
     def members_moved_out(self):
+        _LOGGER.info("Getting members moved out")
         def get(host, url):
             self.session.get(
                 url='{}/report/members-moved-out'.format(url),
@@ -141,6 +144,7 @@ class API():
 
         try:
             result = self._try_beta(get)
+            _LOGGER.debug("Move out list result (as text): %s", result.text)
             return result.json()
         except Exception:
             raise Exception("Unable to get move out report")
