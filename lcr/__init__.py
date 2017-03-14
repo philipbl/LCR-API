@@ -30,12 +30,13 @@ class InvalidCredentialsError(Exception):
 
 
 class API():
-    def __init__(self, username, password, session=None):
+    def __init__(self, username, password, unit_number, session=None):
         self.session = session
         if self.session is None:
             self.session = requests.Session()
 
         self._login(username, password)
+        self.unit_number = unit_number
 
     def _login(self, user, password):
         _LOGGER.info("Logging in")
@@ -100,8 +101,8 @@ class API():
                 cookies={'clerk-resources-beta-terms': 'true'})
 
             return self.session.get(
-                url='{}/services/report/members-moved-in/unit/4022/1'.format(
-                    url),
+                url='{}/services/report/members-moved-in/unit/{}/1'.format(
+                    url, self.unit_number),
                 params={'lang': 'eng'},
                 cookies={'clerk-resources-beta-terms': 'true'},
                 headers={'Accept': 'application/json, text/plain, */*',
@@ -129,8 +130,8 @@ class API():
                 cookies={'clerk-resources-beta-terms': 'true'})
 
             return self.session.get(
-                url='{}/services/report/members-moved-out/unit/4022/1'.format(
-                    url),
+                url='{}/services/report/members-moved-out/unit/{}/1'.format(
+                    url, self.unit_number),
                 params={'lang': 'eng'},
                 cookies={'clerk-resources-beta-terms': 'true'},
                 headers={'Accept': 'application/json, text/plain, */*',
@@ -153,25 +154,25 @@ class API():
     # TODO: This needs to be updated for beta as well!
     def custom_home_and_visiting_teaching(self):
         members = self.session.get(
-            url='{}/4022/members'.format(HT_URL),
+            url='{}/{}/members'.format(HT_URL, self.unit_number),
             cookies={'clerk-resources-beta-terms': 'true'})
         # open("members.json", 'w').write(members.text)
         members = members.json()
 
         hp_data = self.session.get(
-            url='{}/4022/districts/472432'.format(HT_URL),
+            url='{}/{}/districts/472432'.format(HT_URL, self.unit_number),
             cookies={'clerk-resources-beta-terms': 'true'})
         # open("hp_data.json", 'w').write(hp_data.text)
         hp_data = hp_data.json()
 
         eq_data = self.session.get(
-            url='{}/4022/districts/472433'.format(HT_URL),
+            url='{}/{}/districts/472433'.format(HT_URL, self.unit_number),
             cookies={'clerk-resources-beta-terms': 'true'})
         # open("eq_data.json", 'w').write(eq_data.text)
         eq_data = eq_data.json()
 
         rs_data = self.session.get(
-            url='{}/4022/districts/472435'.format(HT_URL),
+            url='{}/{}/districts/472435'.format(HT_URL, self.unit_number),
             cookies={'clerk-resources-beta-terms': 'true'})
         # open("rs_data.json", 'w').write(rs_data.text)
         rs_data = rs_data.json()
@@ -184,7 +185,8 @@ class API():
     def member_list(self):
         def get(host, url):
             return self.session.get(
-                url='{}/services/report/member-list?lang=eng&unitNumber=4022'.format(url),
+                url='{}/services/report/member-list?lang=eng&unitNumber={}'.format(
+                    url, self.unit_number),
                 cookies={'clerk-resources-beta-terms': 'true'})
 
         try:
