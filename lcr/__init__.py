@@ -59,7 +59,8 @@ class API():
                                           'gx_charset': 'UTF-8'})
 
         if 'Your username or password is not recognized' in request.text:
-            raise InvalidCredentialsError("Username or password was not correct.")
+            raise InvalidCredentialsError(
+                "Username or password was not correct.")
 
     def _try_beta(self, func):
         # Try beta first
@@ -94,6 +95,7 @@ class API():
 
     def members_moved_in(self):
         _LOGGER.info("Getting members moved in")
+
         def get(host, url):
             self.session.get(
                 url='{}/report/members-moved-in'.format(url),
@@ -123,6 +125,7 @@ class API():
 
     def members_moved_out(self):
         _LOGGER.info("Getting members moved out")
+
         def get(host, url):
             self.session.get(
                 url='{}/report/members-moved-out'.format(url),
@@ -183,6 +186,7 @@ class API():
                 "rs": rs_data}
 
     def member_list(self):
+
         def get(host, url):
             return self.session.get(
                 url='{}/services/report/member-list?lang=eng&unitNumber={}'.format(
