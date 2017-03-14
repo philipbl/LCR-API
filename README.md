@@ -43,7 +43,7 @@ pip3 install https://github.com/philipbl/LCR-API/archive/master.zip
 ```python
 from lcr import API as LCR
 
-lcr = LCR("<LDS USERNAME>", "<LDS PASSWORD>")
+lcr = LCR("<LDS USERNAME>", "<LDS PASSWORD>", <UNIT NUMBER>)
 
 move_ins = lcr.members_moved_in()
 
