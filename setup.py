@@ -2,8 +2,8 @@
 import os
 from setuptools import setup, find_packages
 
-VERSION = '0.2.0'
-PACKAGE_NAME = 'lcr'
+VERSION = 'v0.2.1'
+PACKAGE_NAME = 'lcr-api'
 HERE = os.path.abspath(os.path.dirname(__file__))
 DOWNLOAD_URL = ('https://github.com/philipbl/LCR-API/archive/'
                 '{}.zip'.format(VERSION))
@@ -22,6 +22,7 @@ setup(
     author='Philip Lundrigan',
     author_email='philiplundrigan@gmail.com',
     description='API for LCR',
+    url='https://github.com/philipbl/LCR-API',
     packages=PACKAGES,
     include_package_data=True,
     zip_safe=False,
