@@ -2,7 +2,7 @@
 import os
 from setuptools import setup, find_packages
 
-VERSION = 'v0.2.1'
+VERSION = 'v0.3.0'
 PACKAGE_NAME = 'lcr-api'
 HERE = os.path.abspath(os.path.dirname(__file__))
 DOWNLOAD_URL = ('https://github.com/philipbl/LCR-API/archive/'
@@ -21,7 +21,7 @@ setup(
     download_url=DOWNLOAD_URL,
     author='Philip Lundrigan',
     author_email='philiplundrigan@gmail.com',
-    description='API for LCR',
+    description='An API for the LDS churches Leader and Clerk Resources (LCR),',
     url='https://github.com/philipbl/LCR-API',
     packages=PACKAGES,
     include_package_data=True,
