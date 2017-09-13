@@ -18,9 +18,9 @@ class InvalidCredentialsError(Exception):
 
 
 class API():
-    def __init__(self, username, password, unit_number, session=None, beta=False):
+    def __init__(self, username, password, unit_number, beta=False):
         self.unit_number = unit_number
-        self.session = session or requests.Session()
+        self.session = requests.Session()
         self.beta = beta
         self.host = BETA_HOST if beta else HOST
 
