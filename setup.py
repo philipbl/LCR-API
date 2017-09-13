@@ -14,6 +14,10 @@ REQUIRES = [
     'requests>=2,<3',
 ]
 
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     name=PACKAGE_NAME,
     version=VERSION,
@@ -22,6 +26,7 @@ setup(
     author='Philip Lundrigan',
     author_email='philiplundrigan@gmail.com',
     description='An API for the LDS churches Leader and Clerk Resources (LCR),',
+    long_description=long_description,
     url='https://github.com/philipbl/LCR-API',
     packages=PACKAGES,
     include_package_data=True,
