@@ -109,3 +109,12 @@ class API():
 
         result = self._make_request(request)
         return result.content
+
+
+    def callings(self):
+        _LOGGER.info("Getting callings for all organizations")
+        request = {'url': 'https://{}/mls/mbr/services/orgs/sub-orgs-with-callings'.format(self.host),
+                   'params': {'lang': 'eng'}}
+
+        result = self._make_request(request)
+        return result.json()
