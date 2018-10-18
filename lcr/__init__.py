@@ -52,12 +52,13 @@ class API():
             request['cookies'] = {'clerk-resources-beta-terms': '4.1',
                                   'clerk-resources-beta-eula': '4.2'}
 
-        return self.session.get(**request)
-
+        response = self.session.get(**request)
+        response.raise_for_status() # break on any non 200 status
+        return response
 
     def birthday_list(self, month, months=1):
         _LOGGER.info("Getting birthday list")
-        request = {'url': 'https://{}/mls/mbr/services/report/birthday-list'.format(self.host),
+        request = {'url': 'https://{}/services/report/birthday-list'.format(LCR_DOMAIN),
                    'params': {'lang': 'eng',
                               'month': month,
                               'months': months}}
