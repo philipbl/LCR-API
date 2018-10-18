@@ -69,7 +69,7 @@ class API():
 
     def members_moved_in(self, months):
         _LOGGER.info("Getting members moved in")
-        request = {'url': 'https://{}/mls/mbr/services/report/members-moved-in/unit/{}/{}'.format(self.host,
+        request = {'url': 'https://{}/services/report/members-moved-in/unit/{}/{}'.format(LCR_DOMAIN,
                                                                                                   self.unit_number,
                                                                                                   months),
                    'params': {'lang': 'eng'}}
@@ -80,7 +80,7 @@ class API():
 
     def members_moved_out(self, months):
         _LOGGER.info("Getting members moved out")
-        request = {'url': 'https://{}/mls/mbr/services/report/members-moved-out/unit/{}/{}'.format(self.host,
+        request = {'url': 'https://{}/services/report/members-moved-out/unit/{}/{}'.format(LCR_DOMAIN,
                                                                                                    self.unit_number,
                                                                                                    months),
                    'params': {'lang': 'eng'}}
@@ -91,7 +91,7 @@ class API():
 
     def member_list(self):
         _LOGGER.info("Getting member list")
-        request = {'url': 'https://{}/mls/mbr/services/report/member-list'.format(self.host),
+        request = {'url': 'https://{}/services/report/member-list'.format(LCR_DOMAIN),
                    'params': {'lang': 'eng',
                               'unitNumber': self.unit_number}}
 
@@ -115,7 +115,7 @@ class API():
 
     def callings(self):
         _LOGGER.info("Getting callings for all organizations")
-        request = {'url': 'https://{}/mls/mbr/services/orgs/sub-orgs-with-callings'.format(self.host),
+        request = {'url': 'https://{}/services/orgs/sub-orgs-with-callings'.format(LCR_DOMAIN),
                    'params': {'lang': 'eng'}}
 
         result = self._make_request(request)
