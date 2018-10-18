@@ -6,6 +6,7 @@ import requests
 _LOGGER = logging.getLogger(__name__)
 HOST = "lds.org"
 BETA_HOST = "beta.lds.org"
+LCR_DOMAIN = "lcr.lds.org"
 
 
 if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
@@ -15,7 +16,6 @@ if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
 
 class InvalidCredentialsError(Exception):
     pass
-
 
 class API():
     def __init__(self, username, password, unit_number, beta=False):
@@ -104,12 +104,13 @@ class API():
         member_id is not the same as Mrn
         """
         _LOGGER.info("Getting photo for {}".format(member_id))
-        request = {'url': 'https://{}/mls/mbr/individual-photo'.format(self.host),
+        request = {'url': 'https://{}/individual-photo/{}'.format(LCR_DOMAIN, member_id),
                    'params': {'lang': 'eng',
-                              'id': member_id}}
+                              'status': 'APPROVED'}}
 
         result = self._make_request(request)
-        return result.content
+        scdn_url = result.json()['tokenUrl']
+        return self._make_request({'url': scdn_url}).content
 
 
     def callings(self):
