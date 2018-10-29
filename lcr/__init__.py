@@ -6,6 +6,7 @@ import requests
 _LOGGER = logging.getLogger(__name__)
 HOST = "lds.org"
 BETA_HOST = "beta.lds.org"
+LCR_DOMAIN = "lcr.lds.org"
 
 
 if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
@@ -15,7 +16,6 @@ if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
 
 class InvalidCredentialsError(Exception):
     pass
-
 
 class API():
     def __init__(self, username, password, unit_number, beta=False):
@@ -52,12 +52,13 @@ class API():
             request['cookies'] = {'clerk-resources-beta-terms': '4.1',
                                   'clerk-resources-beta-eula': '4.2'}
 
-        return self.session.get(**request)
-
+        response = self.session.get(**request)
+        response.raise_for_status() # break on any non 200 status
+        return response
 
     def birthday_list(self, month, months=1):
         _LOGGER.info("Getting birthday list")
-        request = {'url': 'https://{}/mls/mbr/services/report/birthday-list'.format(self.host),
+        request = {'url': 'https://{}/services/report/birthday-list'.format(LCR_DOMAIN),
                    'params': {'lang': 'eng',
                               'month': month,
                               'months': months}}
@@ -68,7 +69,7 @@ class API():
 
     def members_moved_in(self, months):
         _LOGGER.info("Getting members moved in")
-        request = {'url': 'https://{}/mls/mbr/services/report/members-moved-in/unit/{}/{}'.format(self.host,
+        request = {'url': 'https://{}/services/report/members-moved-in/unit/{}/{}'.format(LCR_DOMAIN,
                                                                                                   self.unit_number,
                                                                                                   months),
                    'params': {'lang': 'eng'}}
@@ -79,7 +80,7 @@ class API():
 
     def members_moved_out(self, months):
         _LOGGER.info("Getting members moved out")
-        request = {'url': 'https://{}/mls/mbr/services/report/members-moved-out/unit/{}/{}'.format(self.host,
+        request = {'url': 'https://{}/services/report/members-moved-out/unit/{}/{}'.format(LCR_DOMAIN,
                                                                                                    self.unit_number,
                                                                                                    months),
                    'params': {'lang': 'eng'}}
@@ -90,7 +91,7 @@ class API():
 
     def member_list(self):
         _LOGGER.info("Getting member list")
-        request = {'url': 'https://{}/mls/mbr/services/report/member-list'.format(self.host),
+        request = {'url': 'https://{}/services/report/member-list'.format(LCR_DOMAIN),
                    'params': {'lang': 'eng',
                               'unitNumber': self.unit_number}}
 
@@ -103,18 +104,55 @@ class API():
         member_id is not the same as Mrn
         """
         _LOGGER.info("Getting photo for {}".format(member_id))
-        request = {'url': 'https://{}/mls/mbr/individual-photo'.format(self.host),
+        request = {'url': 'https://{}/individual-photo/{}'.format(LCR_DOMAIN, member_id),
                    'params': {'lang': 'eng',
-                              'id': member_id}}
+                              'status': 'APPROVED'}}
 
         result = self._make_request(request)
-        return result.content
+        scdn_url = result.json()['tokenUrl']
+        return self._make_request({'url': scdn_url}).content
 
 
     def callings(self):
         _LOGGER.info("Getting callings for all organizations")
-        request = {'url': 'https://{}/mls/mbr/services/orgs/sub-orgs-with-callings'.format(self.host),
+        request = {'url': 'https://{}/services/orgs/sub-orgs-with-callings'.format(LCR_DOMAIN),
                    'params': {'lang': 'eng'}}
 
         result = self._make_request(request)
         return result.json()
+
+
+    def members_alt(self):
+        _LOGGER.info("Getting member list")
+        request = {'url': 'https://{}/services/umlu/report/member-list'.format(LCR_DOMAIN),
+                   'params': {'lang': 'eng',
+                              'unitNumber': self.unit_number}}
+
+        result = self._make_request(request)
+        return result.json()
+
+
+    def ministering(self):
+        """
+        API parameters known to be accepted are lang type unitNumber and quarter.
+        """
+        _LOGGER.info("Getting ministering data")
+        request = {'url': 'https://{}/services/umlu/v1/ministering/data-full'.format(LCR_DOMAIN),
+                   'params': {'lang': 'eng',
+                              'unitNumber': self.unit_number}}
+
+        result = self._make_request(request)
+        return result.json()
+
+
+    def access_table(self):
+        """
+        Once the users role id is known this table could be checked to selectively enable or disable methods for API endpoints.
+        """
+        _LOGGER.info("Getting info for data access")
+        request = {'url': 'https://{}/services/access-table'.format(LCR_DOMAIN),
+                   'params': {'lang': 'eng'}}
+
+        result = self._make_request(request)
+        return result.json()
+
