@@ -102,4 +102,3 @@ class Test:
                          "fullTimeMissionary", "address", "age"}
         actual_keys = set(member.keys())
         self.check_keys(expected_keys, actual_keys)
-        
