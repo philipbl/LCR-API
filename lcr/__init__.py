@@ -4,9 +4,9 @@ import logging
 import requests
 
 _LOGGER = logging.getLogger(__name__)
-HOST = "lds.org"
-BETA_HOST = "beta.lds.org"
-LCR_DOMAIN = "lcr.lds.org"
+HOST = "churchofjesuschrist.org"
+BETA_HOST = "beta.churchofjesuschrist.org"
+LCR_DOMAIN = "lcr.churchofjesuschrist.org"
 
 
 if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
@@ -30,8 +30,8 @@ class API():
     def _login(self, user, password):
         _LOGGER.info("Logging in")
 
-        self.session.get('https://www.lds.org/mls/mbr/')
-        request = self.session.post('https://ident.lds.org/sso/UI/Login',
+        self.session.get('https://{}'.format(LCR_DOMAIN))
+        request = self.session.post('https://ident.churchofjesuschrist.org/sso/UI/Login',
                                     data={'action': 'login',
                                           'IDToken1': user,
                                           'IDToken2': password,

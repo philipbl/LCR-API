@@ -34,12 +34,12 @@ class Test:
                          "householdEmail", "phone", "spokenName", "name",
                          "setApart", "priesthoodCode", "priesthoodType",
                          "nameOrder", "householdPhone", "genderLabelShort",
-                         "id", "unitName", "outOfUnitMember"}
+                         "id", "unitName", "outOfUnitMember", "displayBirthdate"}
         actual_keys = set(birthday.keys())
         self.check_keys(expected_keys, actual_keys)
 
     def test_moveins(self):
-        moveins = Test.cd.members_moved_in()
+        moveins = Test.cd.members_moved_in(5)
         assert isinstance(moveins, list)
 
         movein = moveins[0]
@@ -61,7 +61,7 @@ class Test:
         self.check_keys(expected_keys, actual_keys)
 
     def test_moveouts(self):
-        moveouts = Test.cd.members_moved_out()
+        moveouts = Test.cd.members_moved_out(5)
         assert isinstance(moveouts, list)
 
         moveout = moveouts[0]
@@ -73,31 +73,15 @@ class Test:
         actual_keys = set(moveout.keys())
         self.check_keys(expected_keys, actual_keys)
 
-    def test_assignments(self):
-        home_teaching = Test.cd.custom_home_and_visiting_teaching()
-        assert isinstance(home_teaching, dict)
+    def test_ministering(self):
+        ministering = Test.cd.ministering()
+        assert isinstance(ministering, dict)
 
-        hp = home_teaching['hp']
-        assert isinstance(hp, list)
-
-        eq = home_teaching['eq']
+        eq = ministering['elders']
         assert isinstance(eq, list)
 
-        rs = home_teaching['rs']
+        rs = ministering['reliefSociety']
         assert isinstance(rs, list)
-
-        families = home_teaching['families']
-        assert isinstance(families, list)
-
-        family = families[0]
-        assert isinstance(family, dict)
-
-        # Check families
-        expected_keys = {"address", "responsibleHTAuxiliaryId", "spouse",
-                         "isAssignedHT", "children", "headOfHouse",
-                         "emailAddress", "formattedCoupleName", "phone"}
-        actual_keys = set(family.keys())
-        self.check_keys(expected_keys, actual_keys)
 
     def test_member_list(self):
         member_list = Test.cd.member_list()
