@@ -156,3 +156,17 @@ class API():
         result = self._make_request(request)
         return result.json()
 
+    def recommend_status(self):
+        """
+        Obtain member information on recommend status
+        """
+        _LOGGER.info("Getting recommend status")
+        request = {
+                'url': 'https://{}/services/recommend/recommend-status'.format(LCR_DOMAIN),
+                'params': {
+                    'lang': 'eng',
+                    'unitNumber': self.unit_number
+                    }
+                }
+        result = self._make_request(request)
+        return result.json()
