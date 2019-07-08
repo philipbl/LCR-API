@@ -102,3 +102,23 @@ class Test:
                          "fullTimeMissionary", "address", "age"}
         actual_keys = set(member.keys())
         self.check_keys(expected_keys, actual_keys)
+
+    def test_recommend_status(self):
+        recommend_status = Test.cd.recommend_status()
+
+        assert isinstance(recommend_status, list)
+
+        member = recommend_status[0]
+        assert isinstance(member, dict)
+
+        expected_keys = {
+                "name", "spokenName", "nameOrder", "birthDate", "birthDateSort", "gender", "genderCode",
+                "mrn", "id", "email", "householdEmail", "phone", "householdPhone", "unitNumber",
+                "unitName", "priesthood", "priesthoodCode", "priesthoodType", "age", "actualAge", "actualAgeInMonths",
+                "genderLabelShort", "visible", "nonMember", "outOfUnitMember", "marriageDate", "endowmentDate", "expirationDate",
+                "status", "recommendStatus", "type", "unordained", "notBaptized", "recommendEditable", "recommendStatusSimple",
+                "formattedMrn", "setApart", "sustainedDate"
+                }
+
+        actual_keys = set(member.keys())
+        self.check_keys(expected_keys, actual_keys)
