@@ -91,7 +91,7 @@ class API():
 
     def member_list(self):
         _LOGGER.info("Getting member list")
-        request = {'url': 'https://{}/services/report/member-list'.format(LCR_DOMAIN),
+        request = {'url': 'https://{}/services/umlu/report/member-list'.format(LCR_DOMAIN),
                    'params': {'lang': 'eng',
                               'unitNumber': self.unit_number}}
 
