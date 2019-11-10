@@ -2,6 +2,8 @@
 
 import logging
 import requests
+import json
+import re
 
 _LOGGER = logging.getLogger(__name__)
 HOST = "churchofjesuschrist.org"
@@ -30,23 +32,27 @@ class API():
     def _login(self, user, password):
         _LOGGER.info("Logging in")
 
-        self.session.get('https://{}'.format(LCR_DOMAIN))
-        request = self.session.post('https://ident.churchofjesuschrist.org/sso/UI/Login',
-                                    data={'action': 'login',
-                                          'IDToken1': user,
-                                          'IDToken2': password,
-                                          'IDButton': 'Log In',
-                                          'goto': '',
-                                          'gotoOnFail': '',
-                                          'SunQueryParamsString': '',
-                                          'encoded': 'false',
-                                          'gx_charset': 'UTF-8'})
+        request = self.session.get('https://{}'.format(LCR_DOMAIN))
 
-        if 'Your username or password is not recognized' in request.text:
-            raise InvalidCredentialsError(
-                "Username or password was not correct.")
+        # Get authState parameter.
+        text = request.text
+        authState = re.search('"authState":"([A-Za-z0-9]+)"', text).group(1)
 
+        request = self.session.post('https://login.churchofjesuschrist.org/api/authenticate/credentials',
+                                    json={
+                                        'password': password,
+                                        'username': user,
+                                        'authState': authState
+                                    })
 
+        response = json.loads(request.text)
+        obssocookie = response['output']['cookies']['ObSSOCookie']
+        churchcookie = response['output']['cookies']['ChurchSSO']
+
+        self.session.cookies['ObSSOCookie'] = obssocookie
+        self.session.cookies['ChurchSSO'] = churchcookie
+
+        request = self.session.get('https://signin.churchofjesuschrist.org/login.html')
     def _make_request(self, request):
         if self.beta:
             request['cookies'] = {'clerk-resources-beta-terms': '4.1',
