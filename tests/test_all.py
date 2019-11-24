@@ -65,8 +65,7 @@ class Test:
 
         expected_keys = {"deceased", "nextUnitNumber", "name", "nextUnitName",
                          "addressUnknown", "moveDate", "priorUnit",
-                         "moveDateOrder", "birthDate", "nameOrder",
-                         "moveDateDisplay", "birthDateDisplay"}
+                         "moveDateOrder", "birthDate", "nameOrder"}
         actual_keys = set(moveout.keys())
         self.check_keys(expected_keys, actual_keys)
 
