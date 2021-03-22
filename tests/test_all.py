@@ -26,16 +26,18 @@ class Test:
         birthday = birthdays[0]
         assert isinstance(birthday, dict)
 
-        expected_keys = {"unitNumber", "formattedMrn", "priesthood", "mrn",
-                         "actualAge", "actualAgeInMonths", "monthInteger",
-                         "email", "genderCode", "birthDateSort", "age",
-                         "birthDayAge", "birthDate", "nonMember", "visible",
-                         "gender", "dayInteger", "address", "sustainedDate",
-                         "householdEmail", "phone", "spokenName", "name",
-                         "setApart", "priesthoodCode", "priesthoodType",
-                         "nameOrder", "householdPhone", "genderLabelShort",
-                         "id", "unitName", "outOfUnitMember", "displayBirthdate",
-                         "birthDayFormatted", "birthDaySort", "birthDateFormatted"}
+        expected_keys = {
+                'name', 'spokenName', 'nameOrder', 'birthDate',
+                'birthDateSort', 'birthDaySort', 'birthDayFormatted',
+                'birthDateFormatted', 'gender', 'genderCode', 'mrn', 'id',
+                'email', 'householdEmail', 'phone', 'householdPhone',
+                'unitNumber', 'unitName', 'priesthood', 'priesthoodCode',
+                'priesthoodType', 'age', 'actualAge', 'actualAgeInMonths',
+                'genderLabelShort', 'visible', 'nonMember', 'outOfUnitMember',
+                'notAccountable', 'address', 'monthInteger', 'dayInteger',
+                'birthDayAge', 'displayBirthdate', 'sustainedDate',
+                'formattedMrn', 'setApart', 'accountable'
+                }
         actual_keys = set(birthday.keys())
         self.check_keys(expected_keys, actual_keys)
 
@@ -87,21 +89,23 @@ class Test:
         member = member_list[0]
         assert isinstance(member, dict)
 
-        expected_keys = {"isMember", "isSpouse", "householdRole",
-                         "householdPhoneNumber", "nameGivenPreferredLocal",
-                         "nameListPreferredLocal", "sex", "isAdult", "nameFormats",
-                         "priesthoodOffice", "isHead", "birth",
-                         "householdNameFamilyLocal", "isProspectiveElder",
-                         "unitOrgsCombined", "unitName", "outOfUnitMember",
-                         "householdUuid", "householdEmail", "householdAnchorPersonUuid",
-                         "personStatusFlags", "unitNumber", "householdMember",
-                         "formattedAddress", "phoneNumber", "membershipUnit",
-                         "youthBasedOnAge", "nameOrder", "emails", "age", "email",
-                         "member", "houseHoldMemberNameForList", "personUuid",
-                         "householdNameDirectoryLocal", "priesthoodTeacherOrAbove",
-                         "convert", "isOutOfUnitMember", "isSingleAdult",
-                         "isYoungSingleAdult", "uuid", "phones", "address",
-                         "nameFamilyPreferredLocal", "legacyCmisId"}
+        expected_keys = {
+                'nameFormats', 'uuid', 'nameOrder', 'age', 'emails', 'phones',
+                'phoneNumber', 'priesthoodOffice', 'membershipUnit',
+                'legacyCmisId', 'sex', 'unitOrgsCombined', 'positions',
+                'householdMember', 'householdEmail', 'formattedAddress',
+                'isMember', 'householdUuid', 'isProspectiveElder',
+                'isSingleAdult', 'isYoungSingleAdult', 'householdPhoneNumber',
+                'isHead', 'priesthoodTeacherOrAbove', 'convert', 'member',
+                'unitName', 'youthBasedOnAge', 'isSpouse', 'unitNumber',
+                'outOfUnitMember', 'nameGivenPreferredLocal',
+                'houseHoldMemberNameForList', 'isOutOfUnitMember', 'isAdult',
+                'nameFamilyPreferredLocal', 'householdAnchorPersonUuid',
+                'householdNameFamilyLocal', 'householdRole', 'personUuid',
+                'nameListPreferredLocal', 'householdNameDirectoryLocal',
+                'email', 'address', 'birth', 'personStatusFlags'
+                }
+
         actual_keys = set(member.keys())
         self.check_keys(expected_keys, actual_keys)
 
@@ -113,17 +117,20 @@ class Test:
         member = recommend_status[0]
         assert isinstance(member, dict)
 
-        expected_keys = { "name", "spokenName", "nameOrder", "birthDate",
-                          "birthDateSort", "gender", "genderCode", "mrn", "id", "email",
-                          "householdEmail", "phone", "householdPhone", "unitNumber",
-                          "unitName", "priesthood", "priesthoodCode", "priesthoodType",
-                          "age", "actualAge", "actualAgeInMonths", "genderLabelShort",
-                          "visible", "nonMember", "outOfUnitMember", "marriageDate",
-                          "endowmentDate", "expirationDate", "status", "recommendStatus",
-                          "type", "unordained", "notBaptized", "recommendEditable",
-                          "recommendStatusSimple", "formattedMrn", "setApart",
-                          "sustainedDate", "birthDaySort", "birthDateFormatted",
-                          "birthDayFormatted" }
+        expected_keys = {
+                'name', 'spokenName', 'nameOrder', 'birthDate',
+                'birthDateSort', 'birthDaySort', 'birthDayFormatted',
+                'birthDateFormatted', 'gender', 'genderCode', 'mrn', 'id',
+                'email', 'householdEmail', 'phone', 'householdPhone',
+                'unitNumber', 'unitName', 'priesthood', 'priesthoodCode',
+                'priesthoodType', 'age', 'actualAge', 'actualAgeInMonths',
+                'genderLabelShort', 'visible', 'nonMember', 'outOfUnitMember',
+                'notAccountable', 'marriageDate', 'endowmentDate',
+                'expirationDate', 'status', 'recommendStatus', 'type',
+                'unordained', 'notBaptized', 'recommendStatusSimple',
+                'recommendEditable', 'formattedMrn', 'sustainedDate',
+                'accountable', 'setApart'
+                }
 
         actual_keys = set(member.keys())
         self.check_keys(expected_keys, actual_keys)
