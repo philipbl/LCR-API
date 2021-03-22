@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 
+import re
+import json
 import logging
 import requests
-import json
-import re
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 
 _LOGGER = logging.getLogger(__name__)
 HOST = "churchofjesuschrist.org"
-BETA_HOST = "beta.churchofjesuschrist.org"
-LCR_DOMAIN = "lcr.churchofjesuschrist.org"
+BETA_HOST = f"beta.{HOST}"
+LCR_DOMAIN = f"lcr.{HOST}"
+CHROME_OPTIONS = webdriver.chrome.options.Options()
+CHROME_OPTIONS.add_argument("--headless")
+TIMEOUT = 10
 
 
 if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
@@ -19,59 +27,84 @@ if _LOGGER.getEffectiveLevel() <= logging.DEBUG:
 class InvalidCredentialsError(Exception):
     pass
 
+
 class API():
-    def __init__(self, username, password, unit_number, beta=False):
+    def __init__(
+            self, username, password, unit_number, beta=False,
+            driver=webdriver.Chrome(options=CHROME_OPTIONS)):
         self.unit_number = unit_number
         self.session = requests.Session()
+        self.driver = driver
         self.beta = beta
         self.host = BETA_HOST if beta else HOST
 
         self._login(username, password)
 
-
     def _login(self, user, password):
         _LOGGER.info("Logging in")
 
-        request = self.session.get('https://{}'.format(LCR_DOMAIN))
+        # Navigate to the login page
+        self.driver.get(f"https://{LCR_DOMAIN}")
+
+        # Enter the username
+        login_input = WebDriverWait(self.driver, TIMEOUT).until(
+                        ec.presence_of_element_located(
+                            (By.CSS_SELECTOR, "input#okta-signin-username")
+                            )
+                        )
+        login_input.send_keys(user)
+        login_input.submit()
+
+        # Enter password
+        password_input = WebDriverWait(self.driver, TIMEOUT).until(
+                ec.presence_of_element_located(
+                    (By.CSS_SELECTOR, "input.password-with-toggle")
+                    )
+                )
+        password_input.send_keys(password)
+        password_input.submit()
+
+        # Wait until the page is loaded
+        WebDriverWait(self.driver, TIMEOUT).until(
+                ec.presence_of_element_located(
+                    (By.CSS_SELECTOR, "input#memberLookupMain")
+                    )
+                )
 
         # Get authState parameter.
-        text = request.text
-        authState = re.search('"authState":"([A-Za-z0-9]+)"', text).group(1)
+        cookies = self.driver.get_cookies()
+        potential_cookie = [c for c in cookies if "ChurchSSO" in c['name']]
+        real_cookie = next(iter(potential_cookie))
+        churchcookie = real_cookie['value']
 
-        request = self.session.post('https://login.churchofjesuschrist.org/api/authenticate/credentials',
-                                    json={
-                                        'password': password,
-                                        'username': user,
-                                        'authState': authState
-                                    })
-
-        response = json.loads(request.text)
-        obssocookie = response['output']['cookies']['ObSSOCookie']
-        churchcookie = response['output']['cookies']['ChurchSSO']
-
-        self.session.cookies['ObSSOCookie'] = obssocookie
         self.session.cookies['ChurchSSO'] = churchcookie
+        self.driver.close()
+        self.driver.quit()
 
-        request = self.session.get('https://signin.churchofjesuschrist.org/login.html')
     def _make_request(self, request):
         if self.beta:
             request['cookies'] = {'clerk-resources-beta-terms': '4.1',
                                   'clerk-resources-beta-eula': '4.2'}
 
         response = self.session.get(**request)
-        response.raise_for_status() # break on any non 200 status
+        response.raise_for_status()  # break on any non 200 status
         return response
 
     def birthday_list(self, month, months=1):
         _LOGGER.info("Getting birthday list")
-        request = {'url': 'https://{}/services/report/birthday-list'.format(LCR_DOMAIN),
-                   'params': {'lang': 'eng',
-                              'month': month,
-                              'months': months}}
+        request = {
+                'url': 'https://{}/services/report/birthday-list'.format(
+                    LCR_DOMAIN
+                    ),
+                'params': {
+                    'lang': 'eng',
+                    'month': month,
+                    'months': months
+                    }
+                }
 
         result = self._make_request(request)
         return result.json()
-
 
     def members_moved_in(self, months):
         _LOGGER.info("Getting members moved in")
