@@ -26,15 +26,18 @@ class Test:
         birthday = birthdays[0]
         assert isinstance(birthday, dict)
 
-        expected_keys = {"unitNumber", "formattedMrn", "priesthood", "mrn",
-                         "actualAge", "actualAgeInMonths", "monthInteger",
-                         "email", "genderCode", "birthDateSort", "age",
-                         "birthDayAge", "birthDate", "nonMember", "visible",
-                         "gender", "dayInteger", "address", "sustainedDate",
-                         "householdEmail", "phone", "spokenName", "name",
-                         "setApart", "priesthoodCode", "priesthoodType",
-                         "nameOrder", "householdPhone", "genderLabelShort",
-                         "id", "unitName", "outOfUnitMember", "displayBirthdate"}
+        expected_keys = {
+                'name', 'spokenName', 'nameOrder', 'birthDate',
+                'birthDateSort', 'birthDaySort', 'birthDayFormatted',
+                'birthDateFormatted', 'gender', 'genderCode', 'mrn', 'id',
+                'email', 'householdEmail', 'phone', 'householdPhone',
+                'unitNumber', 'unitName', 'priesthood', 'priesthoodCode',
+                'priesthoodType', 'age', 'actualAge', 'actualAgeInMonths',
+                'genderLabelShort', 'visible', 'nonMember', 'outOfUnitMember',
+                'notAccountable', 'address', 'monthInteger', 'dayInteger',
+                'birthDayAge', 'displayBirthdate', 'sustainedDate',
+                'formattedMrn', 'setApart', 'accountable'
+                }
         actual_keys = set(birthday.keys())
         self.check_keys(expected_keys, actual_keys)
 
@@ -45,18 +48,13 @@ class Test:
         movein = moveins[0]
         assert isinstance(movein, dict)
 
-        expected_keys = {"genderCode", "priesthoodCode", "hohMrn", "visible",
-                         "age", "gender", "actualAgeInMonths",
-                         "outOfUnitMember", "moveDateOrder", "priesthood",
-                         "householdPosition", "email", "unitName",
-                         "priorUnitName", "unitNumber", "priesthoodType",
-                         "nameOrder", "address", "deceased", "name",
-                         "birthDateSort", "nonMember", "householdPhone",
-                         "genderLabelShort", "priorUnit", "setApart",
-                         "textAddress", "id", "actualAge", "moveDate",
-                         "householdEmail", "addressUnknown", "spokenName",
-                         "birthDate", "sustainedDate", "mrn", "formattedMrn",
-                         "phone"}
+        expected_keys = {"gender", "phone", "moveDateCalc", "nameOrder",
+                         "genderLabelShort", "priesthood", "addressUnknown",
+                         "birthdate", "birthdateCalc", "moveDate", "unitName",
+                         "priorUnitNumber", "address", "id", "householdPositionEnum",
+                         "priorUnitName", "moveDateOrder", "textAddress", "locale",
+                         "householdUuid", "householdPosition", "name", "age"}
+
         actual_keys = set(movein.keys())
         self.check_keys(expected_keys, actual_keys)
 
@@ -91,15 +89,23 @@ class Test:
         member = member_list[0]
         assert isinstance(member, dict)
 
-        expected_keys = {"outOfUnitMember", "setApart", "priesthoodCode", "id", "name",
-                         "gender", "formattedMrn", "isSpouse", "sustainedDate", "mrn",
-                         "unitName", "priesthoodType", "spokenName", "householdPhone",
-                         "visible", "priesthood", "nonMember", "isAdult", "birthDateSort",
-                         "isHead", "birthDate", "genderLabelShort",
-                         "genderCode", "actualAge", "phone", "householdEmail",
-                         "actualAgeInMonths", "householdId", "coupleName",
-                         "nameOrder", "givenName", "email", "unitNumber",
-                         "fullTimeMissionary", "address", "age"}
+        expected_keys = {
+                'nameFormats', 'uuid', 'nameOrder', 'age', 'emails', 'phones',
+                'phoneNumber', 'priesthoodOffice', 'membershipUnit',
+                'legacyCmisId', 'sex', 'unitOrgsCombined', 'positions',
+                'householdMember', 'householdEmail', 'formattedAddress',
+                'isMember', 'householdUuid', 'isProspectiveElder',
+                'isSingleAdult', 'isYoungSingleAdult', 'householdPhoneNumber',
+                'isHead', 'priesthoodTeacherOrAbove', 'convert', 'member',
+                'unitName', 'youthBasedOnAge', 'isSpouse', 'unitNumber',
+                'outOfUnitMember', 'nameGivenPreferredLocal',
+                'houseHoldMemberNameForList', 'isOutOfUnitMember', 'isAdult',
+                'nameFamilyPreferredLocal', 'householdAnchorPersonUuid',
+                'householdNameFamilyLocal', 'householdRole', 'personUuid',
+                'nameListPreferredLocal', 'householdNameDirectoryLocal',
+                'email', 'address', 'birth', 'personStatusFlags'
+                }
+
         actual_keys = set(member.keys())
         self.check_keys(expected_keys, actual_keys)
 
@@ -112,12 +118,18 @@ class Test:
         assert isinstance(member, dict)
 
         expected_keys = {
-                "name", "spokenName", "nameOrder", "birthDate", "birthDateSort", "gender", "genderCode",
-                "mrn", "id", "email", "householdEmail", "phone", "householdPhone", "unitNumber",
-                "unitName", "priesthood", "priesthoodCode", "priesthoodType", "age", "actualAge", "actualAgeInMonths",
-                "genderLabelShort", "visible", "nonMember", "outOfUnitMember", "marriageDate", "endowmentDate", "expirationDate",
-                "status", "recommendStatus", "type", "unordained", "notBaptized", "recommendEditable", "recommendStatusSimple",
-                "formattedMrn", "setApart", "sustainedDate"
+                'name', 'spokenName', 'nameOrder', 'birthDate',
+                'birthDateSort', 'birthDaySort', 'birthDayFormatted',
+                'birthDateFormatted', 'gender', 'genderCode', 'mrn', 'id',
+                'email', 'householdEmail', 'phone', 'householdPhone',
+                'unitNumber', 'unitName', 'priesthood', 'priesthoodCode',
+                'priesthoodType', 'age', 'actualAge', 'actualAgeInMonths',
+                'genderLabelShort', 'visible', 'nonMember', 'outOfUnitMember',
+                'notAccountable', 'marriageDate', 'endowmentDate',
+                'expirationDate', 'status', 'recommendStatus', 'type',
+                'unordained', 'notBaptized', 'recommendStatusSimple',
+                'recommendEditable', 'formattedMrn', 'sustainedDate',
+                'accountable', 'setApart'
                 }
 
         actual_keys = set(member.keys())
