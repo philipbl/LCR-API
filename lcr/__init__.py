@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from webdriver_manager.chrome import ChromeDriverManager
 
 _LOGGER = logging.getLogger(__name__)
 HOST = "churchofjesuschrist.org"
@@ -31,7 +32,7 @@ class InvalidCredentialsError(Exception):
 class API():
     def __init__(
             self, username, password, unit_number, beta=False,
-            driver=webdriver.Chrome(options=CHROME_OPTIONS)):
+            driver=webdriver.Chrome(ChromeDriverManager().install())):
         self.unit_number = unit_number
         self.session = requests.Session()
         self.driver = driver
@@ -67,7 +68,7 @@ class API():
         # Wait until the page is loaded
         WebDriverWait(self.driver, TIMEOUT).until(
                 ec.presence_of_element_located(
-                    (By.CSS_SELECTOR, "input#memberLookupMain")
+                    (By.CSS_SELECTOR, "churchofjesuschrist-eden-normalize")
                     )
                 )
 
